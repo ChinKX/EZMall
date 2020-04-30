@@ -18,6 +18,7 @@ class CreateProductStoreTable extends Migration
             $table->unsignedInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
             $table->unsignedInteger('product_id');
+            $table->integer('quantity');
             $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();
         });
