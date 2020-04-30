@@ -12,7 +12,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'type', 'price', 'quantity', 'status'
+        'name', 'description', 'type', 'price', 'status'
     ];
 
     /**
@@ -21,7 +21,7 @@ class Product extends Model
      */
     public function order_items()
     {
-        return $this->hasMany(Order_Item::class);
+        return $this->hasMany(OrderItem::class);
     }
 
     /**
@@ -30,6 +30,6 @@ class Product extends Model
      */
     public function stores()
     {
-        return $this->belongsToMany(Store::class);
+        return $this->belongsToMany(Store::class)->withPivot('quantity');
     }
 }

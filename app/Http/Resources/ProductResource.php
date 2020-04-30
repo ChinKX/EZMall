@@ -20,7 +20,6 @@ class ProductResource extends Resource
             'description' => $this->description,
             'type' => $this->type,
             'price' => $this->price,
-            'quantity' => $this->quantity,
             'status' => $this->status,
             'order_items' => new OrderItemCollection($this->whenLoaded('order_items')),
             'stores' => new StoreCollection($this->whenLoaded('stores')),

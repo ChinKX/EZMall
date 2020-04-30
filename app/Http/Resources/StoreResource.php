@@ -21,6 +21,9 @@ class StoreResource extends Resource
             'merchant' => new UserResource($this->whenLoaded('merchant')),
             'country' => new CountryResource($this->whenLoaded('country')),
             'products' => new ProductCollection($this->whenLoaded('products')),
+            // 'product_quantity' => $this->whenPivotLoaded('product_store', function () {
+            //     return $this->pivot->quantity;
+            // }),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];
