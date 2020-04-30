@@ -97,7 +97,10 @@ class StoreController extends Controller
 
             // info($product_quantity);
 
-            return new StoreResource($store);
+            return response()->json([
+                'store' => new StoreResource($store),
+                'product_quantity' => $product_quantity
+            ]);
         }
         catch(ModelNotFoundException $ex) {
             return response()->json([

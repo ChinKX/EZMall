@@ -32,4 +32,13 @@ class Product extends Model
     {
         return $this->belongsToMany(Store::class)->withPivot('quantity');
     }
+
+    /**
+     * Get the orders related to this product
+     *
+     */
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items')->withPivot('quantity');
+    }
 }

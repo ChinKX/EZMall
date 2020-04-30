@@ -21,7 +21,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return new OrderCollection(Order::with(['customer', 'order_items'])->get());
+        return new OrderCollection(Order::with(['customer', 'order_items', 'products'])->get());
     }
 
     /**
@@ -47,23 +47,14 @@ class OrderController extends Controller
                 'customer_id' => $request->input('customer_id'),
                 'status' => $request->input('status')
             ]);
-
-            $parsed_order_items = json_decode($request->input('order_items'), true);
-
-            $order_items = array();
-
-            foreach($parsed_order_items as $item) {
-                array_push($order_items, OrderItem::create([
-                    'order_id' => $item['order_id'],
-                    'product_id' => $item['product_id'],
+            
+            foreach($request->input('order_items') as $item) {
+                $order->products()->attach($item['product_id'], [
                     'quantity' => $item['quantity']
-                ]));
+                ]);
             };
 
-            return response()->json([
-                'order' => new OrderResource($order),
-                'order_items' => new OrderItemCollection($order_items)
-            ]);
+            return new OrderResource($order);
         } catch (QueryException $ex) {
             return response()->json([
                 'message' => $ex->getMessage()
@@ -84,10 +75,23 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            $order = Order::with(['customer', 'order_items'])->find($id);
+            $order = Order::with(['customer', 'order_items', 'products'])->find($id);
             if(!$order) throw new ModelNotFoundException;
 
-            return new OrderResource($order);
+            $product_quantity = array();
+            foreach($order->products as $product) {
+                array_push($product_quantity, [
+                    'product_id' => $product->pivot->product_id,
+                    'quantity' => $product->pivot->quantity
+                ]);
+            }
+
+            // info($product_quantity);
+
+            return response()->json([
+                'order' => new OrderResource($order),
+                'product_quantity' => $product_quantity
+            ]);
         }
         catch(ModelNotFoundException $ex) {
             return response()->json([
@@ -117,31 +121,20 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $order = Order::with(['customer', 'order_items'])->find($id);
+            $order = Order::with(['customer', 'order_items', 'products'])->find($id);
             if(!$order) throw new ModelNotFoundException;
 
-            $parsed_order_items = json_decode($request->input('order_items'), true);
-            $order_items = $order->order_items;
-            $validIds = array();
+            $order->update([
+                'customer_id' => $request->input('customer_id'),
+                'status' => $request->input('status')
+            ]);
 
-            // Update the related order items
-            foreach($parsed_order_items as $item) {
-                array_push($validIds, $item['id']);
-                $itemToUpdate = $order_items->find($item['id']);
-                $itemToUpdate->fill([
-                    'order_id' => $item['order_id'],
-                    'product_id' => $item['product_id'],
+            $order->products()->detach();
+            foreach($request->input('order_items') as $item) {
+                $order->products()->attach($item['product_id'], [
                     'quantity' => $item['quantity']
                 ]);
-                $itemToUpdate->saveOrFail();
-            }
-
-            // Delete the unrelated order items
-            foreach($order_items as $item) {
-                if (!in_array($item->id, $validIds)) {
-                    $item->delete();
-                }
-            }
+            };
 
             return response()->json(null, 204);
         }
@@ -171,11 +164,8 @@ class OrderController extends Controller
     public function destroy($id)
     {
         try {
-            $order = Order::with('order_items')->findOrFail($id);
-            $order_items = $order->order_items;
-            foreach($order_items as $item) {
-                $item->delete();
-            }
+            $order = Order::with(['customer', 'order_items', 'products'])->findOrFail($id);
+            $order->products()->detach();
             $order->delete();
 
             return 204;
