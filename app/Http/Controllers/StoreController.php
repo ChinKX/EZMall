@@ -28,7 +28,9 @@ class StoreController extends Controller
         //     }
         // }
 
-        return new StoreCollection(Store::with(['merchant', 'country', 'products', 'orders'])->get());
+        return new StoreCollection(Store::with([
+            'merchant', 'country', 'products', 'orders', 'orders.customer', 'orders.order_items'
+        ])->get());
     }
 
     /**
@@ -84,7 +86,9 @@ class StoreController extends Controller
     public function show($id)
     {
         try {
-            $store = Store::with(['merchant', 'country', 'products', 'orders'])->find($id);
+            $store = Store::with([
+                'merchant', 'country', 'products', 'orders', 'orders.customer', 'orders.order_items'
+            ])->find($id);
             if(!$store) throw new ModelNotFoundException;
 
             $product_quantity = array();

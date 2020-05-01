@@ -14,7 +14,7 @@ class Home extends Component {
   }
 
   getData() {
-    axios.get('http://localhost:8000/api/stores/2')
+    axios.get('http://localhost:8000/api/stores/1')
       .then(response => {
         this.setState({
           store: response.data.store,
@@ -72,6 +72,9 @@ class Home extends Component {
   }
 
   render() {
+    console.log('home')//!
+    console.log(this.state.carts)//!
+    console.log(this.state.product_quantity)//!
     if (this.state.loading) {
       return <div></div>;
     }
