@@ -41,4 +41,13 @@ class Store extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
+
+    /**
+     * Get the orders of this store
+     *
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

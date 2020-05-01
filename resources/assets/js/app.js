@@ -12,18 +12,18 @@ import Navbar from './components/Navbar';
 
 ReactDOM.render(
   <Router>
-      <div>
-        <Navbar />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/my-orders">
-            <MyCarts />
-          </Route>
-        </Switch>
-      </div>
-    </Router>,
+    <div>
+      <Navbar />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/my-orders">
+          <MyCarts />
+        </Route>
+      </Switch>
+    </div>
+  </Router>,
   document.getElementById('root')
 );
 

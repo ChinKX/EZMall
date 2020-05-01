@@ -45,6 +45,7 @@ class OrderController extends Controller
         try {
             $order = Order::create([
                 'customer_id' => $request->input('customer_id'),
+                'store_id' => $request->input('store_id'),
                 'status' => $request->input('status')
             ]);
             
@@ -126,6 +127,7 @@ class OrderController extends Controller
 
             $order->update([
                 'customer_id' => $request->input('customer_id'),
+                'store_id' => $request->input('store_id'),
                 'status' => $request->input('status')
             ]);
 

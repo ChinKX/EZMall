@@ -12,7 +12,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'customer_id', 'status'
+        'customer_id', 'store_id', 'status'
     ];
 
     /**
@@ -22,6 +22,15 @@ class Order extends Model
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    /**
+     * Get the store of this order
+     *
+     */
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
 
     /**

@@ -21,6 +21,7 @@ class StoreResource extends Resource
             'merchant' => new UserResource($this->whenLoaded('merchant')),
             'country' => new CountryResource($this->whenLoaded('country')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
+            'orders' => OrderResource::collection($this->whenLoaded('orders')),
             // 'product_quantity' => $this->whenPivotLoaded('product_store', function () {
             //     return $this->pivot->quantity;
             // }),
