@@ -18,7 +18,7 @@ class OrderResource extends Resource
             'id' => $this->id,
             'customer' => new UserResource($this->whenLoaded('customer')),
             'status' => $this->status,
-            'order_items' => new OrderItemCollection($this->whenLoaded('order_items')),
+            'order_items' => OrderItemResource::collection($this->whenLoaded('order_items')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];

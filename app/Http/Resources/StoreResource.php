@@ -20,7 +20,7 @@ class StoreResource extends Resource
             'description' => $this->description,
             'merchant' => new UserResource($this->whenLoaded('merchant')),
             'country' => new CountryResource($this->whenLoaded('country')),
-            'products' => new ProductCollection($this->whenLoaded('products')),
+            'products' => ProductResource::collection($this->whenLoaded('products')),
             // 'product_quantity' => $this->whenPivotLoaded('product_store', function () {
             //     return $this->pivot->quantity;
             // }),

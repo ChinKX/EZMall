@@ -21,8 +21,8 @@ class ProductResource extends Resource
             'type' => $this->type,
             'price' => $this->price,
             'status' => $this->status,
-            'order_items' => new OrderItemCollection($this->whenLoaded('order_items')),
-            'stores' => new StoreCollection($this->whenLoaded('stores')),
+            'order_items' => OrderItemResource::collection($this->whenLoaded('order_items')),
+            'stores' => StoreResource::collection($this->whenLoaded('stores')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];

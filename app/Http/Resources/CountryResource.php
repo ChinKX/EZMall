@@ -18,7 +18,7 @@ class CountryResource extends Resource
             'country_code' => $this->country_code,
             'name' => $this->name,
             'continent_name' => $this->continent_name,
-            'stores' => new StoreCollection($this->whenLoaded('stores')),
+            'stores' => StoreResource::collection($this->whenLoaded('stores')),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at
         ];
