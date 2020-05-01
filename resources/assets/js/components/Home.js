@@ -9,7 +9,7 @@ class Home extends Component {
       product_quantity: [],
       carts: [],
       loading: true,
-      // openMyCarts: false
+      openMyCarts: false
     }
   }
 
@@ -72,9 +72,6 @@ class Home extends Component {
   }
 
   render() {
-    console.log('home')//!
-    console.log(this.state.carts)//!
-    console.log(this.state.product_quantity)//!
     if (this.state.loading) {
       return <div></div>;
     }
@@ -92,7 +89,10 @@ class Home extends Component {
         </div>
         <button
           disabled={this.state.product_quantity.find(p_q => p_q.product_id === product.id).quantity <= 0}
-          onClick={() => this.addToCart(product.id)} className="btn btn-primary" type="submit">Add To Cart</button>
+          onClick={() => this.addToCart(product.id)} className="btn btn-primary"
+        >
+            Add To Cart
+        </button>
       </div>
     ));
 
@@ -119,6 +119,7 @@ class Home extends Component {
           {
             this.state.openMyCarts &&
             <MyCarts
+              createOrder={true}
               store={this.state.store}
               product_quantity={this.state.product_quantity}
               carts={this.state.carts}

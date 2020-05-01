@@ -7,7 +7,8 @@ import {
   Route
 } from "react-router-dom";
 import Home from './components/Home';
-import MyCarts from './components/MyCarts';
+import MyOrders from './components/MyOrders';
+import EditOrder from './components/EditOrder';
 import Navbar from './components/Navbar';
 
 ReactDOM.render(
@@ -19,7 +20,10 @@ ReactDOM.render(
           <Home />
         </Route>
         <Route path="/my-orders">
-          <MyCarts />
+          <MyOrders />
+        </Route>
+        <Route path="/edit-order/:id">
+          <EditOrder />
         </Route>
       </Switch>
     </div>

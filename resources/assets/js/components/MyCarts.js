@@ -5,7 +5,6 @@ import axios from 'axios';
 
 class MyCarts extends Component {
   render() {
-    console.log(this.props.product_quantity)//!
     return (
       <Dialog open={true} maxWidth='md' fullWidth>
         <div className="container p-3">
@@ -41,28 +40,22 @@ class MyCarts extends Component {
               <button className="btn btn-primary m-2" onClick={async () => {
                 // Create new order & update stocks
                 try {
-                  // console.log(this.props.store)//!
-                  // console.log(this.props.product_quantity)//!
-                  // console.log({
-                  //   name: this.props.store.name,
-                  //   description: this.props.store.description,
-                  //   merchant_id: this.props.store.merchant_id,
-                  //   country_code: this.props.store.country.country_code,
-                  //   products: this.props.product_quantity.map(
-                  //     p_q => ({
-                  //       id: p_q.product_id,
-                  //       quantity: p_q.quantity
-                  //     })
-                  //   )
-                  // })//!
                   await Promise.all([
-                    axios.post(
-                      'http://localhost:8000/api/orders', {
-                      customer_id: 2,
-                      store_id: 1,
-                      status: 'processing',
-                      order_items: this.props.carts
-                    }),
+                    this.props.createOrder
+                      ? axios.post(
+                        'http://localhost:8000/api/orders', {
+                        customer_id: 2,
+                        store_id: 1,
+                        status: 'processing',
+                        order_items: this.props.carts
+                      })
+                      : axios.put(
+                        'http://localhost:8000/api/orders/' + this.props.orderId, {
+                        customer_id: 2,
+                        store_id: 1,
+                        status: 'processing',
+                        order_items: this.props.carts
+                      }),
                     axios.put(
                       'http://localhost:8000/api/stores/' + '1',
                       {
@@ -87,7 +80,7 @@ class MyCarts extends Component {
                   console.log(error);
                 }
               }}>
-                Buy
+                {this.props.createOrder ? "Buy" : "Update"}
               </button>
             </div>
           </div>

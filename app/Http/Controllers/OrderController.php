@@ -19,9 +19,18 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new OrderCollection(Order::with(['customer', 'order_items', 'products'])->get());
+        $customerId = $request->query('customerId');
+        if ($customerId) {
+            return new OrderCollection(Order::with(
+                ['customer', 'order_items', 'store', 'order_items.product', 'products']
+            )->where('customer_id', '=', $customerId)->get());
+        } else {
+            return new OrderCollection(Order::with(
+                ['customer', 'order_items', 'store', 'order_items.product', 'products']
+            )->get());
+        }
     }
 
     /**
@@ -76,7 +85,9 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            $order = Order::with(['customer', 'order_items', 'products'])->find($id);
+            $order = Order::with([
+                'customer', 'order_items', 'store', 'order_items.product', 'products'
+            ])->find($id);
             if(!$order) throw new ModelNotFoundException;
 
             $product_quantity = array();
