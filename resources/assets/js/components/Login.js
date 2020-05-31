@@ -40,6 +40,7 @@ class Login extends Component {
       "email": this.state.email,
       "password": this.state.password
     }).then(response => {
+      console.log('Entered');//!
       console.log(response);//!
       setIsLoggedIn(true);
       setToken(response.data.access_token);
@@ -48,7 +49,7 @@ class Login extends Component {
       window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       this.props.refresh();
       this.props.history.push('/home');
-    });
+    }).catch(error => console.log(error.response.data.error));
     
     // return this.setState({ error: '' });
   }
